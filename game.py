@@ -6,21 +6,25 @@ class Game:
     game_number = 0
     games_to_play = 0
 
+    # Loop until games to play runs out
     while games_to_play <= 0:
       try:
         games_to_play = int(input("How many games would you like to play? "))
       except:
         print("You must enter a number.")
 
+    # Loop until game number is less than games to play
     while game_number < games_to_play:
       game_number += 1
 
       deck = Deck()
       deck.shuffle()
 
+      # Initiate new players
       player = Hand()
       dealer = Hand(dealer=True)
 
+      # Alter adding cards to each player
       for _ in range(2):
         player.add_card(deck.deal(1))
         dealer.add_card(deck.deal(1))
@@ -34,6 +38,7 @@ class Game:
       if self.check_winner(player, dealer):
         continue
 
+      # Getting player to enter hit or stand
       choice = ""
       while player.get_value() < 21 and choice not in ["s", "stand"]:
         choice = input("Please choose 'Hit' or 'Stand': ").lower()
@@ -48,18 +53,22 @@ class Game:
       if self.check_winner(player, dealer):
         continue
 
+      # Get the player values
       player_value = player.get_value()
       dealer_value = dealer.get_value()
 
+      # When dealer is less than 18 add new cards
       while dealer_value <= 17:
         dealer.add_card(deck.deal())
         dealer_value = dealer.get_value()
 
+      # Display dealers cards
       dealer.display(show_all_dealer_cards=True)
 
       if self.check_winner(player, dealer):
         continue
 
+      # Display rounds results and the winner
       print("Final Results:")
       print("\tYour hand: ", player_value)
       print("\tDealer's hand: ", dealer_value)
